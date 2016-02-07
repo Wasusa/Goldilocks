@@ -23,20 +23,28 @@ Contains all functions used
 #Basic Panel Calc Functions
 #Contains functions for the number of slats, the lilo, how long the slats are,
 #And whether the panel is acceptable.
+"""Determines the lead in/Lead out for a given panel where no specific value
+for either is given. Automatically gives the balanced value"""
 def LILOcalc(Height,Slats,Slat,Spacing):
     val = (Height - (Slats*Slat) -((Slats-1)*Spacing))/2
     return val
 
+"""Determines the Lead out where the lead in is given""""
 def SpecifiedLIcalc(Height,Slats,Slat,Spacing,LI):
     val = (Height - (Slats*Slat) -((Slats-1)*Spacing))-LI
     return val
 
+"""Determines how many slats can fit into a given panel"""
 def NumSlatcalc(Height,Slat,Spacing):
     return math.floor(Height/(Slat+Spacing))
 
+"""Returns the required cut size of the slat given the material it is being
+placed into"""
 def SlatSizecalc(Length,material):
     return(Length-((material*2)-30))
 
+"""Essentially a tolerance check: Does the panel as specified meet our
+standard styling requirements?""""
 def Acceptable(Spacing,LILOorLO):
     if (LILOorLO <= Spacing and LILOorLO >=MinLilo):
         Result = True
@@ -44,12 +52,17 @@ def Acceptable(Spacing,LILOorLO):
         Result = False
     return(Result)
 
+"""Provides two options for changes to a panels height should the original not
+meet standard styling requirements"""
 def ReqChange(Height,LILOorLO,Spacing,Slat):
     newHeightlower = Height-(LILOorLO-MinLILO)
     newHeightupper = Height-LILOorLO+Spacing+Slat+MinLILO
     
     return(newHeightupper, newHeightlower)
 
+"""I expect to feed in lists containing height, width, and how many of that
+type of panel exist. If these lists aren't the same size, the solution
+method won't work. This checks that the lists are of equal length"""
 def ListCheck(List1,List2,List3):
     if len(List1)==len(List2)==len(List3):
         passed = True
@@ -61,6 +74,7 @@ def ListCheck(List1,List2,List3):
 #Contains stock requirement estimator using Lineal Metres.
 #Will almost always underestimate required stock
 
+"""Straight sums required length of material"""
 def LinealEstimate(Length,Number):
     return math.ceil((Length*Number)/MaterialLength)
 
@@ -68,6 +82,8 @@ def LinealEstimate(Length,Number):
 #Contains stock requirement estimator using conservative methods
 #Will almost always overestimate required stock
 
+"""Determines the amount of material required given only so many peices can be
+cut from the original length, and that there will be some waste"""
 def SafeEstimate(Length,Number):
     perSlat = math.floor(MaterialLength/Length)
     return(math.ceil(Number/perSlat))
@@ -86,14 +102,7 @@ GUI Layout and Formating
 """
 
 def GUI():
-    
-    window = tkinter.ttk.Notebook()
-    f1 = tkinter.ttk.Frame(window)
-    f2 = tkinter.ttk.Frame(window)   # second pane
-    window.add(f1)
-    window.add(f2)
-    window.mainloop()
-    window.tabs()
+
 
     return()
 
